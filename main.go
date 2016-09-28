@@ -7,7 +7,7 @@ import (
 
 	"strings"
 
-	"github.com/micanzhang/tools/pg"
+	"github.com/micanzhang/pg/pg"
 )
 
 // http://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-golang
@@ -25,7 +25,8 @@ var (
 )
 
 func init() {
-	// TODO
+	flag.Usage = Usage
+
 	flag.IntVar(&length, "l", 16, "length of password")
 	flag.IntVar(&upperCase, "U", 2, "at least width of upperCase chars")
 	flag.IntVar(&lowerCase, "L", 2, "at least width of lowerCase chars")
@@ -44,7 +45,6 @@ func init() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error ocurred: %s", err)
 	}
-
 }
 
 func main() {
@@ -208,7 +208,5 @@ func list() {
 }
 
 func printEntry(entry pg.Entry) {
-	//fmt.Printf("{\n\tdomain: %s,\n\tusername: %s\n}\n", entry.Domain, entry.Username)
-	//fmt.Printf("domain: %s, username: %s\n", entry.Domain, entry.Username)
 	fmt.Printf("%s: %s\n", entry.Domain, entry.Username)
 }
