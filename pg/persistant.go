@@ -3,6 +3,7 @@ package pg
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 )
 
 type EntryPersistant interface {
@@ -15,6 +16,13 @@ type FileEntryPersistant struct {
 }
 
 func NewFileEntryPersistant(path string) EntryPersistant {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		_, err = os.Create(path)
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	return &FileEntryPersistant{
 		path: path,
 	}
