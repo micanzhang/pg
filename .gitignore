@@ -22,3 +22,8 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# emacs temp file and projectile project file.
+*~
+*#
+.projectile
