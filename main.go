@@ -43,7 +43,7 @@ func init() {
 
 	mgr, err = pg.NewEntryMgr(persistance)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error ocurred: %s", err)
+		fmt.Fprintf(os.Stderr, "error occurred: %s", err)
 	}
 }
 

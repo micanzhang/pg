@@ -1,6 +1,8 @@
 # pg [![Build Status](https://travis-ci.org/micanzhang/pg.svg?branch=master)](https://travis-ci.org/micanzhang/pg)
 command line tools  for password generation.
 
+we store password files at `~/.pg`, and  encrypt password by [AES encryption algorithm](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
+
 ## required 
 
 1. go  (lastest version recommended)
@@ -48,3 +50,7 @@ $pg new -d mysql -u root
 ```sh
 $pg info -d mysql -u root -k passwordphrase
 ```
+
+### TODO 
+
+sync by dropbox and google drive.
