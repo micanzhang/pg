@@ -31,7 +31,7 @@ func (f *FileEntryPersistant) Restore() (entries []Entry, err error) {
 }
 
 func (f *FileEntryPersistant) Save(entries []Entry) error {
-	data, err := json.Marshal(entries)
+	data, err := json.MarshalIndent(entries, "", "    ")
 	if err != nil {
 		return err
 	}
