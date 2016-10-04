@@ -79,9 +79,8 @@ func sliceToMap(entries []Entry) map[string]map[string]Entry {
 		ee, ok := res[e.Domain]
 		if !ok {
 			ee = make(map[string]Entry)
-			ee[e.Username] = e
 		}
-
+		ee[e.Username] = e
 		res[e.Domain] = ee
 	}
 
