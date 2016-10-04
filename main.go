@@ -7,6 +7,7 @@ import (
 
 	"strings"
 
+	"github.com/howeyc/gopass"
 	"github.com/micanzhang/pg/pg"
 )
 
@@ -181,6 +182,14 @@ func infoAction() {
 		return
 	}
 
+	fmt.Fprint(os.Stdout, "Key:")
+	keyBytes, err := gopass.GetPasswdMasked()
+	if err != nil {
+		panic(err)
+	}
+
+	key = string(keyBytes)
+
 	if key == "" {
 		fmt.Fprintln(os.Stderr, "-k is required")
 		return
@@ -188,7 +197,8 @@ func infoAction() {
 
 	plaintext, err := entry.Password.Plaintext(key)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "invalid -k paramsters: %s ", key)
+		fmt.Fprint(os.Stderr, "invalid key")
+		return
 	}
 
 	fmt.Println(plaintext)
