@@ -1,7 +1,10 @@
 package pg
 
+import "sync"
+
 type EntryMgr struct {
 	persistance EntryPersistant
+	mu          sync.Mutex
 	Entries     map[string]map[string]Entry
 }
 
@@ -17,6 +20,9 @@ func NewEntryMgr(persistance EntryPersistant) (*EntryMgr, error) {
 }
 
 func (em *EntryMgr) Get(domain string, username string) (entry Entry, ok bool) {
+	em.mu.Lock()
+	defer em.mu.Unlock()
+
 	ee, ok := em.Entries[domain]
 	if !ok {
 		return
@@ -29,6 +35,9 @@ func (em *EntryMgr) Get(domain string, username string) (entry Entry, ok bool) {
 func (em *EntryMgr) Put(entry Entry) {
 	defer em.Flush()
 
+	em.mu.Lock()
+	defer em.mu.Unlock()
+
 	ee, ok := em.Entries[entry.Domain]
 	if !ok {
 		ee = make(map[string]Entry)
@@ -38,7 +47,14 @@ func (em *EntryMgr) Put(entry Entry) {
 	em.Entries[entry.Domain] = ee
 }
 
-func (em *EntryMgr) Remove(domain string, username string) bool {
+func (em *EntryMgr) Remove(domain string, username string) (ok bool) {
+	em.mu.Lock()
+	defer func() {
+		if ok == false {
+			em.mu.Unlock()
+		}
+	}()
+
 	ee, ok := em.Entries[domain]
 	if !ok {
 		return false
@@ -48,15 +64,20 @@ func (em *EntryMgr) Remove(domain string, username string) bool {
 		return false
 	}
 
-	defer em.Flush()
-
 	delete(ee, username)
 	em.Entries[domain] = ee
+
+	em.mu.Unlock()
+
+	em.Flush()
 
 	return true
 }
 
 func (em *EntryMgr) Flush() {
+	em.mu.Lock()
+	defer em.mu.Unlock()
+
 	if err := em.persistance.Save(mapToSlice(em.Entries)); err != nil {
 		panic(err)
 	}
