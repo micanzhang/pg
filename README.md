@@ -1,4 +1,5 @@
-# pg [![Build Status](https://travis-ci.org/micanzhang/pg.svg?branch=master)](https://travis-ci.org/micanzhang/pg)
+# pg [![Build Status](https://travis-ci.org/micanzhang/pg.svg?branch=master)](https://travis-ci.org/micanzhang/pg) [![Go Report Card](https://goreportcard.com/badge/github.com/micanzhang/pg)](https://goreportcard.com/report/github.com/micanzhang/pg)
+
 command line tools  for password generation.
 
 we store password files at `~/.pg`, and  encrypt password by [AES encryption algorithm](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
