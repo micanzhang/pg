@@ -34,13 +34,23 @@ func init() {
 	flag.StringVar(&domain, "d", "", "domain")
 	flag.StringVar(&username, "u", "", "username")
 
-	path := fmt.Sprintf("%s/.pg", os.Getenv("HOME"))
-	persistance := pg.NewFileEntryPersistant(path)
 	var err error
+	defer func() {
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error occurred: %s", err)
+			os.Exit(1)
+		}
+	}()
 
+	path, err := pg.Path()
+	if err != nil {
+		return
+	}
+
+	persistance := pg.NewFileEntryPersistant(path)
 	mgr, err = pg.NewEntryMgr(persistance)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "error occurred: %s", err)
+		return
 	}
 }
 
