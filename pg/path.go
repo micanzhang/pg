@@ -41,7 +41,8 @@ func dropboxPath() (string, error) {
 		return "", nil
 	}
 
-	if _, err := os.Stat(infoPath); err == os.ErrNotExist {
+	_, err := os.Stat(infoPath)
+	if err != nil && (err == os.ErrNotExist || os.IsNotExist(err)) {
 		return "", nil
 	}
 
